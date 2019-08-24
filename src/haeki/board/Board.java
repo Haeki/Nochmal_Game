@@ -1,24 +1,29 @@
+package haeki.board;
+
+import haeki.Game;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.TreeSet;
 
+@SuppressWarnings("CopyConstructorMissesField")
 public class Board {
-    private BoardField[] board;
-    private int width;
-    private int height;
+    private final BoardField[] board;
+    private final int width;
+    private final int height;
 
     private int uncheckedStars;
     private int score;
 
-    TreeSet<Integer> completeColumns = new TreeSet<>();
-    TreeSet<Integer> finishedColumnsFirst = new TreeSet<>();
-    TreeSet<Integer> finishedColumnsLast = new TreeSet<>();
-    TreeSet<BoardField.FieldColor> completedColors = new TreeSet<>();
-    TreeSet<BoardField.FieldColor> finishedColorsFirst = new TreeSet<>();
-    TreeSet<BoardField.FieldColor> finishedColorsLast = new TreeSet<>();
-    Color boardColor;
+    private TreeSet<Integer> completedColumns = new TreeSet<>();
+    private final TreeSet<Integer> finishedColumnsFirst = new TreeSet<>();
+    private final TreeSet<Integer> finishedColumnsLast = new TreeSet<>();
+    private TreeSet<BoardField.FieldColor> completedColors = new TreeSet<>();
+    private final TreeSet<BoardField.FieldColor> finishedColorsFirst = new TreeSet<>();
+    private final TreeSet<BoardField.FieldColor> finishedColorsLast = new TreeSet<>();
+    private final Color boardColor;
 
     public Board(BoardField[] b, int w, int h, Color boardColor) {
         width = w;
@@ -34,7 +39,8 @@ public class Board {
         this.board = Arrays.stream(board.getBoard()).map(BoardField::new).toArray(BoardField[]::new);
         this.width = board.getWidth();
         this.height = board.getHeight();
-        this.completeColumns.addAll(board.completeColumns);
+        this.completedColumns.addAll(board.completedColumns);
+        this.boardColor = board.boardColor;
         this.finishedColumnsFirst.addAll(board.finishedColumnsFirst);
         this.finishedColumnsLast.addAll(board.finishedColumnsLast);
         this.completedColors.addAll(board.completedColors);
@@ -50,52 +56,54 @@ public class Board {
         return uncheckedStars;
     }
 
-    int getBoardSize() {
+    public int getBoardSize() {
         return board.length;
     }
 
-    int getWidth() {
+    public int getWidth() {
         return width;
     }
 
-    int getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public BoardField[] getBoard() {
+    private BoardField[] getBoard() {
         return board;
     }
 
-    BoardField getField(int x, int y) {
+    public BoardField getField(int x, int y) {
         return board[x + (15*y)];
     }
 
-    BoardField getField(int index) {
+    public BoardField getField(int index) {
         return board[index];
     }
 
-    public void updateAccessible() {
-        for (int x = 0; x < 15; x++) {
-            for (int y = 0; y < 7; y++) {
-                if(getField(x, y).isChecked()) {
-                    if(x > 0) {
-                        getField(x - 1, y).setAccessible(true);
-                    }
-                    if(x < 14) {
-                        getField(x + 1, y).setAccessible(true);
-                    }
-                    if(y > 0) {
-                        getField(x,y - 1).setAccessible(true);
-                    }
-                    if(y < 7) {
-                        getField(x,y + 1).setAccessible(true);
-                    }
-                }
-            }
-        }
-    }
+// --Commented out by Inspection START (8/24/19, 11:52 PM):
+//    public void updateAccessible() {
+//        for (int x = 0; x < 15; x++) {
+//            for (int y = 0; y < 7; y++) {
+//                if(getField(x, y).isChecked()) {
+//                    if(x > 0) {
+//                        getField(x - 1, y).setAccessible(true);
+//                    }
+//                    if(x < 14) {
+//                        getField(x + 1, y).setAccessible(true);
+//                    }
+//                    if(y > 0) {
+//                        getField(x,y - 1).setAccessible(true);
+//                    }
+//                    if(y < 6) {
+//                        getField(x,y + 1).setAccessible(true);
+//                    }
+//                }
+//            }
+//        }
+//    }
+// --Commented out by Inspection STOP (8/24/19, 11:52 PM)
 
-    void updateAccessible(Collection<BoardField> checkedFields) {
+    public void updateAccessible(Collection<BoardField> checkedFields) {
         for (BoardField f : checkedFields) {
            if(f.getX() > 0) {
                getField(f.getX() - 1, f.getY()).setAccessible(true);
@@ -112,7 +120,7 @@ public class Board {
         }
     }
 
-    ArrayList<BoardField> getNeighboursWithSameColor(BoardField boardField) {
+    public ArrayList<BoardField> getNeighboursWithSameColor(BoardField boardField) {
         ArrayList<BoardField> neighbours = new ArrayList<>();
         if(boardField.getX() > 0) {
             BoardField bf = getField(boardField.getX() - 1, boardField.getY());
@@ -141,7 +149,7 @@ public class Board {
         return neighbours;
     }
 
-    void setChecked(Collection<BoardField> checkedFields) {
+    public void setChecked(Collection<BoardField> checkedFields) {
         for(BoardField bf : checkedFields) {
             getField(bf.getIndex()).setChecked(true);
         }
@@ -183,7 +191,7 @@ public class Board {
             }
             if(columnFinish) {
                 if(!finishedColumnsFirst.contains(x) && !finishedColumnsLast.contains(x)) {
-                    if (completeColumns.contains(x)) {
+                    if (completedColumns.contains(x)) {
                         finishedColumnsLast.add(x);
                     } else {
                         finishedColumnsFirst.add(x);
@@ -209,7 +217,40 @@ public class Board {
         //System.out.println("uncheckedStars: " + uncheckedStars);
     }
 
+    public TreeSet<Integer> getCompletedColumns() {
+        return completedColumns;
+    }
+
+    public TreeSet<Integer> getFinishedColumnsFirst() {
+        return finishedColumnsFirst;
+    }
+
+    public TreeSet<Integer> getFinishedColumnsLast() {
+        return finishedColumnsLast;
+    }
+
+    public TreeSet<BoardField.FieldColor> getCompletedColors() {
+        return completedColors;
+    }
+
+    public TreeSet<BoardField.FieldColor> getFinishedColorsFirst() {
+        return finishedColorsFirst;
+    }
+
+    public TreeSet<BoardField.FieldColor> getFinishedColorsLast() {
+        return finishedColorsLast;
+    }
+
+
     public Color getColor() {
         return boardColor;
+    }
+
+    public void setCompletedColumns(TreeSet<Integer> completeColumns) {
+        this.completedColumns = completeColumns;
+    }
+
+    public void setCompletedColors(TreeSet<BoardField.FieldColor> completedColors) {
+        this.completedColors = completedColors;
     }
 }

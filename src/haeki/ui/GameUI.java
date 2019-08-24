@@ -1,12 +1,14 @@
+package haeki.ui;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+@SuppressWarnings("unused")
 public class GameUI {
-    private JFrame frame;
 
     public void initUI(String winText) {
-        frame = new JFrame(winText);
+        JFrame frame = new JFrame(winText);
 
         frame.pack();
 

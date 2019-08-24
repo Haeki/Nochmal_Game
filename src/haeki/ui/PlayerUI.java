@@ -1,3 +1,8 @@
+package haeki.ui;
+
+import haeki.board.Board;
+import haeki.board.BoardField;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,16 +13,17 @@ public class PlayerUI extends UI {
     private int buttonID = -3;
 
 
+    @SuppressWarnings("ThrowablePrintedToSystemOut")
     public int chooseField() {
         buttonID = -3;
         while(buttonID < -2) {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
-
+                System.err.println(e.getCause());
             }
         }
-        //System.out.println("Field id:" + buttonID + " was choosen");
+        //System.out.println("Field id:" + buttonID + " was chosen");
         return buttonID;
     }
 
@@ -68,7 +74,7 @@ public class PlayerUI extends UI {
 
     class BoardFieldPanel extends BoardFieldPanelAbstract {
 
-        public BoardFieldPanel(int x, int y, BoardField bf) {
+        BoardFieldPanel(int x, int y, BoardField bf) {
             setPreferredSize(new Dimension(36, 36));
             setLayout(new BorderLayout());
             JButton butt = new JButton();

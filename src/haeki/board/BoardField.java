@@ -1,3 +1,5 @@
+package haeki.board;
+
 import java.util.ArrayList;
 
 public class BoardField implements Comparable<BoardField>{
@@ -9,7 +11,7 @@ public class BoardField implements Comparable<BoardField>{
         RED(3),
         ORANGE(4);
 
-        private int index;
+        private final int index;
 
         public static FieldColor get(int index) {
             switch (index) {
@@ -31,12 +33,12 @@ public class BoardField implements Comparable<BoardField>{
         }
     }
 
-    private boolean star;
+    private final boolean star;
     private boolean checked;
     private boolean accessible;
-    private FieldColor fieldColor;
-    private int x;
-    private int y;
+    private final FieldColor fieldColor;
+    private final int x;
+    private final int y;
 
     public BoardField(boolean star, FieldColor fieldColor, int x, int y) {
         this.star = star;
@@ -67,7 +69,7 @@ public class BoardField implements Comparable<BoardField>{
         return x + (15*y);
     }
 
-    boolean nextToFields(ArrayList<BoardField> fields) {
+    public boolean nextToFields(ArrayList<BoardField> fields) {
         for (BoardField f : fields) {
             //check for x
             if(((x > 0 && (x - f.getX()) == 1) || (x < 14 && (f.getX() - x) == 1)) && y == f.getY()) {

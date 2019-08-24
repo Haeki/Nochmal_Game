@@ -1,43 +1,49 @@
+package haeki.ui;
+
+import haeki.board.Board;
+import haeki.board.BoardField;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
 public abstract class UI {
 
+    @SuppressWarnings("SpellCheckingInspection")
     private final char[] abc = "ABCDEFGHIJKLMNO".toCharArray();
     private final String[] pointsFirstKey = {"5","3","3","3","2","2","2","1R","2","2","2","3","3","3","5"};
     private final String[] pointsLastKey =  {"3","2","2","2","1","1","1","0R","1","1","1","2","2","2","3"};
 
-    final static int CONFIRM_MOVE = -1;
-    final static int CANCEL_MOVE = -2;
+    public final static int CONFIRM_MOVE = -1;
+    public final static int CANCEL_MOVE = -2;
 
     final Color[] fieldColors = {new Color(0x788B41), new Color(0xCBBD0D), new Color(0x7e8c99), new Color(0xC11940), new Color(0xDC7823), Color.BLACK};
 
     Color backgroundCol = new Color(0x69a1b5);
 
-    private JLabel[] pointsLabels = new JLabel[5];
-    private ColorFinishPanel[] colorFinishedPanels = new ColorFinishPanel[10];
-    private WhiteFieldPanel[] columnPointsFirstPanels = new WhiteFieldPanel[15];
-    private WhiteFieldPanel[] columnPointsLastPanels = new WhiteFieldPanel[15];
-    private JLabel[] jokerPanels = new JLabel[8];
-    private JPanel[] colorDicePanel = new JPanel[3];
-    private JLabel[] numberDiceLabel = new JLabel[3];
+    private final JLabel[] pointsLabels = new JLabel[5];
+    private final ColorFinishPanel[] colorFinishedPanels = new ColorFinishPanel[10];
+    private final WhiteFieldPanel[] columnPointsFirstPanels = new WhiteFieldPanel[15];
+    private final WhiteFieldPanel[] columnPointsLastPanels = new WhiteFieldPanel[15];
+    private final JLabel[] jokerPanels = new JLabel[8];
+    private final JPanel[] colorDicePanel = new JPanel[3];
+    private final JLabel[] numberDiceLabel = new JLabel[3];
 
-    private ImageIcon icon_normal;
+    ImageIcon icon_normal;
     private ImageIcon icon_normal_checked;
-    private ImageIcon icon_star;
+    ImageIcon icon_star;
     private ImageIcon icon_star_checked;
     private ImageIcon icon_joker;
     private ImageIcon icon_joker_checked;
-    private HashMap<String, ImageIcon> numbers = new HashMap<>(6);
-    private HashMap<String, ImageIcon> numbersChecked = new HashMap<>(6);
-    private HashMap<String, ImageIcon> numbersCircled = new HashMap<>(6);
+    private final HashMap<String, ImageIcon> numbers = new HashMap<>(6);
+    private final HashMap<String, ImageIcon> numbersChecked = new HashMap<>(6);
+    private final HashMap<String, ImageIcon> numbersCircled = new HashMap<>(6);
 
     private JPanel boardPanel;
     private JFrame frame;
 
 
-    void initUI(String winText, Board board) {
+    public void initUI(String winText, Board board) {
         loadImages();
         backgroundCol = board.getColor();
 
@@ -64,7 +70,7 @@ public abstract class UI {
         frame.setVisible(true);
     }
 
-    public abstract void addSubPanels(JPanel mainPanel, Board board);
+    protected abstract void addSubPanels(JPanel mainPanel, Board board);
 
     JPanel createGamePanel(Board board) {
         JPanel gamePanel = new JPanel();
@@ -74,11 +80,8 @@ public abstract class UI {
         JPanel abcHeaderPanel = createWhiteFieldPanel();
         for (int i = 0; i < abc.length; i++) {
             WhiteFieldPanel innerPanel;
-            if( i == 7) {
-                innerPanel = new WhiteFieldPanel(String.valueOf(abc[i]), Color.RED);
-            } else {
-                innerPanel = new WhiteFieldPanel(String.valueOf(abc[i]));
-            }
+            if( i == 7) innerPanel = new WhiteFieldPanel(String.valueOf(abc[i]), Color.RED);
+            else innerPanel = new WhiteFieldPanel(String.valueOf(abc[i]));
             abcHeaderPanel.add(innerPanel);
         }
         gamePanel.add(abcHeaderPanel);
@@ -233,7 +236,7 @@ public abstract class UI {
         return  dicePanel;
     }
 
-    void updateDices(ArrayList<Integer> col, ArrayList<Integer> num) {
+    public void updateDices(ArrayList<Integer> col, ArrayList<Integer> num) {
         for (int i = 0; i < col.size(); i++) {
             //System.out.println("--- Setting Dice Color to " + col.get(i));
             colorDicePanel[i].setBackground(fieldColors[col.get(i)]);
@@ -257,7 +260,7 @@ public abstract class UI {
         }
     }
 
-    void updateColorFinished(TreeSet<BoardField.FieldColor> colorFirst, TreeSet<BoardField.FieldColor> colorsLast, TreeSet<BoardField.FieldColor> colorsFinished) {
+    public void updateColorFinished(TreeSet<BoardField.FieldColor> colorFirst, TreeSet<BoardField.FieldColor> colorsLast, TreeSet<BoardField.FieldColor> colorsFinished) {
         for (BoardField.FieldColor col : colorsFinished) {
             colorFinishedPanels[col.getIndex() * 2].setIcon(numbersChecked.get("5"));
         }
@@ -269,13 +272,13 @@ public abstract class UI {
         }
     }
 
-    void updateJokers(int used) {
+    public void updateJokers(int used) {
         for (int i = 0; i < used; i++) {
             jokerPanels[i].setIcon(icon_joker_checked);
         }
     }
 
-    void updateColumnFinished(TreeSet<Integer> columnsFirst, TreeSet<Integer> columnsLast, TreeSet<Integer> columnsFinished) {
+    public void updateColumnFinished(TreeSet<Integer> columnsFirst, TreeSet<Integer> columnsLast, TreeSet<Integer> columnsFinished) {
         for(int i : columnsFinished) {
             columnPointsFirstPanels[i].setIcon(numbersChecked.get(pointsFirstKey[i]));
         }
@@ -287,14 +290,14 @@ public abstract class UI {
         }
     }
 
-    void updateScore(int[] scores) {
+    public void updateScore(int[] scores) {
         for (int i = 0; i < scores.length; i++) {
             pointsLabels[i].setText(String.valueOf(scores[i]));
         }
     }
 
     /*
-    public void confirmField(BoardField boardField) {
+    public void confirmField(haeki.board.BoardField boardField) {
         BoardFieldPanelAbstract boardFieldPanel = (BoardFieldPanelAbstract) boardPanel.getComponent(boardField.getIndex());
         if(boardField.isStar()) {
             boardFieldPanel.setIcon(icon_star_checked);
@@ -303,7 +306,7 @@ public abstract class UI {
         }
     }*/
 
-    void checkField(BoardField checkedField) {
+    public void checkField(BoardField checkedField) {
         BoardFieldPanelAbstract boardFieldPanel = (BoardFieldPanelAbstract) boardPanel.getComponent(checkedField.getIndex());
         if(checkedField.isStar()) {
             boardFieldPanel.setIcon(icon_star_checked);
@@ -313,7 +316,7 @@ public abstract class UI {
         //System.out.println("check Field: " + checkedField.getX() + "|" + checkedField.getY());
     }
 
-    void checkFields(Iterator<BoardField> fieldsIt) {
+    public void checkFields(Iterator<BoardField> fieldsIt) {
         while (fieldsIt.hasNext()) {
             checkField(fieldsIt.next());
         }
@@ -335,7 +338,7 @@ public abstract class UI {
         }
     }
 
-    void loadImages() {
+    private void loadImages() {
         icon_normal = new ImageIcon("res/icons/normal_32.png");
         icon_normal_checked = new ImageIcon("res/icons/normal_checked_32.png");
         icon_star = new ImageIcon("res/icons/star_32.png");
@@ -358,7 +361,7 @@ public abstract class UI {
         }
     }
 
-    JPanel createWhiteFieldPanel() {
+    private JPanel createWhiteFieldPanel() {
         JPanel panel = new JPanel();
         panel.setBackground(backgroundCol);
         panel.setLayout(new FlowLayout(FlowLayout.CENTER, 3,3));  //new GridLayout(1, 15, 3,3));
@@ -382,7 +385,7 @@ public abstract class UI {
     }
 
     class ColorFinishPanel extends RoundedJPanel {
-        JLabel lbl;
+        final JLabel lbl;
 
         void setIcon(ImageIcon icon) {
             lbl.setIcon(icon);
@@ -398,6 +401,7 @@ public abstract class UI {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     class WideWhiteFieldPanel extends WhiteFieldPanel {
 
         WideWhiteFieldPanel(String text,  Color fontColor, int fieldSizeX, int fieldSizeY, int index) {
@@ -408,7 +412,7 @@ public abstract class UI {
             lbl.setForeground(fontColor);
             add(lbl);
             JLabel lbl2 = new JLabel("");
-            lbl2.setFont(lbl.getFont().deriveFont(24));
+            lbl2.setFont(lbl.getFont().deriveFont(Font.BOLD, 24));
             lbl2.setForeground(Color.BLACK);
             pointsLabels[index] = lbl2;
             add(lbl2);
@@ -436,7 +440,7 @@ public abstract class UI {
             add(lbl);
         }
 
-        WhiteFieldPanel(String text, Color fontColor) {
+        WhiteFieldPanel(String text, @SuppressWarnings("SameParameterValue") Color fontColor) {
             super();
             init();
             lbl = new JLabel(text);
@@ -452,7 +456,7 @@ public abstract class UI {
             add(lbl);
         }
 
-        public void setIcon(ImageIcon icon) {
+        void setIcon(ImageIcon icon) {
             lbl.setIcon(icon);
         }
     }
@@ -463,7 +467,7 @@ public abstract class UI {
 
 
     /*
-        public BoardFieldPanel(int x, int y, BoardField bf) {
+        public BoardFieldPanel(int x, int y, haeki.board.BoardField bf) {
             setPreferredSize(new Dimension(36, 36));
             boardField = bf;
             setLayout(new BorderLayout());
@@ -488,15 +492,15 @@ public abstract class UI {
     public class RoundedJPanel extends JPanel {
 
         /** Double values for Horizontal and Vertical radius of corner arcs */
-        protected Dimension arcs = new Dimension(8, 8);
+        final Dimension arcs = new Dimension(8, 8);
         boolean whiteBorder = false;
 
-        public RoundedJPanel() {
+        RoundedJPanel() {
             super();
             setOpaque(false);
         }
 
-        public void setWhiteBorder(boolean b) {
+        void setWhiteBorder(@SuppressWarnings("SameParameterValue") boolean b) {
             whiteBorder = b;
         }
 
@@ -532,6 +536,9 @@ public abstract class UI {
         }
     }
 
+    /**
+     * @param Msg String to be shown in MessageDialog
+     */
     public void showMessage(String Msg) {
         JOptionPane.showMessageDialog(frame, Msg);
     }

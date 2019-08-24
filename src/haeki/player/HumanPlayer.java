@@ -1,3 +1,10 @@
+package haeki.player;
+
+import haeki.board.Board;
+import haeki.board.BoardField;
+import haeki.ui.PlayerUI;
+import haeki.ui.UI;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -15,18 +22,18 @@ public class HumanPlayer extends Player {
     /*
     @Override
     public void selectFields(int col, int num) {
-        System.out.println("Player " + playerNum + " selecting Field for: ");
+        System.out.println("haeki.player.Player " + playerNum + " selecting Field for: ");
         System.out.print("Colors: ");
-        Game.printColor(col);
+        haeki.Game.printColor(col);
         System.out.println();
         System.out.print("Numbers: ");
-        Game.printNumber(num);
+        haeki.Game.printNumber(num);
         System.out.println();
 
-        BoardField bf = getFistField(col, num);
+        haeki.board.BoardField bf = getFistField(col, num);
         if(bf == null) {return;}
 
-        ArrayList<BoardField> checkedFields = new ArrayList<>(5);
+        ArrayList<haeki.board.BoardField> checkedFields = new ArrayList<>(5);
         int selectedColor = bf.getFieldColor().getIndex();
 
         ui.confirmField(bf);
@@ -44,11 +51,11 @@ public class HumanPlayer extends Player {
         System.out.println("confirm Field: " + bf.getX() + "|" + bf.getY() + " canFinish=" + canFinish);
 
         while(true) {
-            int index = ((PlayerUI) (ui)).chooseField();
+            int index = ((haeki.ui.PlayerUI) (ui)).chooseField();
 
             if(index == ui.CANCEL_MOVE) {
                 ui.uncheckFields(checkedFields.iterator());
-                System.out.println("Cancel Move");
+                System.out.println("Cancel haeki.Move");
                 return;
             } else if(index == ui.CONFIRM_MOVE) {
                 if(canFinish) {
@@ -100,7 +107,7 @@ public class HumanPlayer extends Player {
         }
     }*/
 
-    private BoardField getFistField(ArrayList<Integer> col, ArrayList<Integer> num) {
+    private BoardField getFistField(ArrayList<Integer> col) {
         while(true) {
             useColorJoker = false;
             int index = ((PlayerUI) (ui)).chooseField();
@@ -130,7 +137,7 @@ public class HumanPlayer extends Player {
     }
 
 
-    private BoardField getFistField(int col, int num) {
+    private BoardField getFistField(int col) {
         while(true) {
             useColorJoker = false;
             int index = ((PlayerUI) (ui)).chooseField();
@@ -151,11 +158,11 @@ public class HumanPlayer extends Player {
 
     @Override
     public int[] selectFields(ArrayList<Integer> col, ArrayList<Integer> num) {
-        //System.out.println("Player " + playerNum + " via Arrays selecting Field for: ");
-        //Game.printDice(col, num);
+        //System.out.println("haeki.player.Player " + playerNum + " via Arrays selecting Field for: ");
+        //haeki.Game.printDice(col, num);
         ui.updateDices(col, num);
 
-        BoardField bf = getFistField(col, num);
+        BoardField bf = getFistField(col);
         if(bf == null) {return null;}
 
         ArrayList<BoardField> checkedFields = new ArrayList<>(5);
@@ -180,7 +187,7 @@ public class HumanPlayer extends Player {
 
             if(index == UI.CANCEL_MOVE) {
                 ui.uncheckFields(checkedFields.iterator());
-                System.out.println("Cancel Move");
+                System.out.println("Cancel haeki.Move");
                 return null;
             } else if(index == UI.CONFIRM_MOVE) {
                 if(canFinish) {
@@ -245,8 +252,8 @@ public class HumanPlayer extends Player {
 
 
     @Override
-    void init(Board board) {
+    public void init(Board board) {
         super.init(board);
-        ui.initUI("Player " + playerNum, board);
+        ui.initUI("haeki.player.Player " + playerNum, board);
     }
 }

@@ -1,3 +1,9 @@
+package haeki;
+
+import haeki.board.Board;
+import haeki.board.BoardField;
+import haeki.player.Player;
+
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -5,24 +11,24 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class Game {
     public final static int[] pointsFirst = {5,3,3,3,2,2,2,1,2,2,2,3,3,3,5};
     public final static int[] pointsLast =  {3,2,2,2,1,1,1,0,1,1,1,2,2,2,3};
 
-    BoardField[] boardArr = new BoardField[105];
+    private final BoardField[] boardArr = new BoardField[105];
     private ArrayList<Player> players;
-    private GameUI gameUI;
-    ArrayList<Integer> colorDice = new ArrayList<>(Arrays.asList(1,1,1));
-    ArrayList<Integer> numberDice = new ArrayList<>(Arrays.asList(1,1,1));
-    TreeSet<Integer> completeColumns = new TreeSet<>();
-    TreeSet<BoardField.FieldColor> completeColors = new TreeSet<>();
-    int rounds;
-    int activePlayer;
-    String boardName = "error";
-    Color boardColor;
-    Random rand;
+    private final ArrayList<Integer> colorDice = new ArrayList<>(Arrays.asList(1,1,1));
+    private final ArrayList<Integer> numberDice = new ArrayList<>(Arrays.asList(1,1,1));
+    private final TreeSet<Integer> completeColumns = new TreeSet<>();
+    private final TreeSet<BoardField.FieldColor> completeColors = new TreeSet<>();
+    private int rounds;
+    private int activePlayer;
+    private String boardName = "error";
+    private Color boardColor;
+    private final Random rand;
 
-    public Game(String boardPath) {
+    Game(String boardPath) {
          try {
             boardFromFile(boardPath);
         } catch (IOException e) {
@@ -36,7 +42,7 @@ public class Game {
         rand.setSeed(seed);
     }
 
-    public void boardFromFile(String path) throws IOException {
+    private void boardFromFile(String path) throws IOException {
 
         File file = new File(path);
         if(!file.canRead()) {
@@ -82,25 +88,25 @@ public class Game {
 
 
 
-    public void initGame(ArrayList<Player> ps) {
+    void initGame(ArrayList<Player> ps) {
         players = ps;
         rounds = 0;
         activePlayer = rand.nextInt(players.size());
         for (Player p : players) {
             p.init(new Board(Arrays.stream(boardArr).map(BoardField::new).toArray(BoardField[]::new), 15, 7, boardColor));
         }
-        //gameUI = new GameUI();
+        //gameUI = new haeki.ui.GameUI();
         //gameUI.initUI("Noch mal - " + boardName);
     }
 
-    void rollDice() {
+    private void rollDice() {
         for (int i = 0; i < 3; i++) {
             colorDice.set(i, rand.nextInt(6));
             numberDice.set(i, rand.nextInt(6));
         }
     }
 
-    public static void printColor(int c) {
+    private static void printColor(int c) {
         switch (c) {
             case 0:
                 System.out.print("Green ");
@@ -123,7 +129,7 @@ public class Game {
         }
     }
 
-    public static void printNumber(int n) {
+    private static void printNumber(int n) {
         if(n == 5) {
             System.out.print("Joker ");
         } else {
@@ -131,6 +137,7 @@ public class Game {
         }
     }
 
+    @SuppressWarnings("unused")
     public static void printDice(Collection<Integer> colorD, Collection<Integer> numberD) {
         System.out.print("Colors: ");
         for (int val: colorD) {
@@ -144,7 +151,8 @@ public class Game {
         System.out.println(" ");
     }
 
-    public void run() {
+    @SuppressWarnings("unchecked")
+    void run() {
         boolean isRunning = true;
         while(isRunning) {
             //if(gameUI.getButtonInput() == 1) {

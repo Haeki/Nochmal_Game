@@ -1,3 +1,8 @@
+package haeki.ui;
+
+import haeki.board.Board;
+import haeki.board.BoardField;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -23,7 +28,7 @@ public class AlgoUI extends UI{
 
     class BoardFieldPanel extends BoardFieldPanelAbstract {
 
-        public BoardFieldPanel(int x, BoardField bf) {
+        BoardFieldPanel(int x, BoardField bf) {
             setPreferredSize(new Dimension(36, 36));
             setLayout(new BorderLayout());
             JLabel lbl = new JLabel();
