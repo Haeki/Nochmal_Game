@@ -4,42 +4,42 @@ import java.util.*;
 
 public abstract class UI {
 
-    final char[] abc = "ABCDEFGHIJKLMNO".toCharArray();
-    final String[] pointsFirstKey = {"5","3","3","3","2","2","2","1R","2","2","2","3","3","3","5"};
-    final String[] pointsLastKey =  {"3","2","2","2","1","1","1","0R","1","1","1","2","2","2","3"};
+    private final char[] abc = "ABCDEFGHIJKLMNO".toCharArray();
+    private final String[] pointsFirstKey = {"5","3","3","3","2","2","2","1R","2","2","2","3","3","3","5"};
+    private final String[] pointsLastKey =  {"3","2","2","2","1","1","1","0R","1","1","1","2","2","2","3"};
 
-    public final static int CONFIRM_MOVE = -1;
-    public final static int CANCEL_MOVE = -2;
+    final static int CONFIRM_MOVE = -1;
+    final static int CANCEL_MOVE = -2;
 
-    final Color[] fieldColors = {new Color(0x8b8a30), new Color(0xe9932c), new Color(0x7e8c99), new Color(0xd0393e), new Color(0xdc5f2f), Color.BLACK};
+    final Color[] fieldColors = {new Color(0x788B41), new Color(0xCBBD0D), new Color(0x7e8c99), new Color(0xC11940), new Color(0xDC7823), Color.BLACK};
 
-    Color backgroundCol = new Color(0);
-    Color whiteCol = new Color(0xEEEEEE);
+    Color backgroundCol = new Color(0x69a1b5);
 
-    JLabel[] pointsLabels = new JLabel[5];
-    ColorFinishPanel[] colorFinishedPanels = new ColorFinishPanel[10];
-    WhiteFieldPanel[] columnPointsFirstPanels = new WhiteFieldPanel[15];
-    WhiteFieldPanel[] columnPointsLastPanels = new WhiteFieldPanel[15];
-    JLabel[] jokerPanels = new JLabel[8];
-    JPanel[] colorDicePanel = new JPanel[3];
-    JLabel[] numberDiceLabel = new JLabel[3];
+    private JLabel[] pointsLabels = new JLabel[5];
+    private ColorFinishPanel[] colorFinishedPanels = new ColorFinishPanel[10];
+    private WhiteFieldPanel[] columnPointsFirstPanels = new WhiteFieldPanel[15];
+    private WhiteFieldPanel[] columnPointsLastPanels = new WhiteFieldPanel[15];
+    private JLabel[] jokerPanels = new JLabel[8];
+    private JPanel[] colorDicePanel = new JPanel[3];
+    private JLabel[] numberDiceLabel = new JLabel[3];
 
-    ImageIcon icon_normal;
-    ImageIcon icon_normal_checked;
-    ImageIcon icon_star;
-    ImageIcon icon_star_checked;
-    ImageIcon icon_joker;
-    ImageIcon icon_joker_checked;
-    HashMap<String, ImageIcon> numbers = new HashMap<>(6);
-    HashMap<String, ImageIcon> numbersChecked = new HashMap<>(6);
-    HashMap<String, ImageIcon> numbersCircled = new HashMap<>(6);
+    private ImageIcon icon_normal;
+    private ImageIcon icon_normal_checked;
+    private ImageIcon icon_star;
+    private ImageIcon icon_star_checked;
+    private ImageIcon icon_joker;
+    private ImageIcon icon_joker_checked;
+    private HashMap<String, ImageIcon> numbers = new HashMap<>(6);
+    private HashMap<String, ImageIcon> numbersChecked = new HashMap<>(6);
+    private HashMap<String, ImageIcon> numbersCircled = new HashMap<>(6);
 
-    JPanel boardPanel;
-    JFrame frame;
+    private JPanel boardPanel;
+    private JFrame frame;
 
 
-    public void initUI(String winText, Board board) {
+    void initUI(String winText, Board board) {
         loadImages();
+        backgroundCol = board.getColor();
 
         frame = new JFrame(winText);
         JPanel mainPanel = new JPanel();
@@ -66,7 +66,7 @@ public abstract class UI {
 
     public abstract void addSubPanels(JPanel mainPanel, Board board);
 
-    public JPanel createGamePanel(Board board) {
+    JPanel createGamePanel(Board board) {
         JPanel gamePanel = new JPanel();
         gamePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         gamePanel.setBackground(backgroundCol);
@@ -129,7 +129,7 @@ public abstract class UI {
 
     abstract Component createBoardFieldPanel(int x, int y, BoardField field);
 
-    public JPanel createScoresPanel() {
+    JPanel createScoresPanel() {
         JPanel scoresPanel = new JPanel();
         scoresPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 5, 5));
         scoresPanel.setBackground(backgroundCol);
@@ -233,7 +233,7 @@ public abstract class UI {
         return  dicePanel;
     }
 
-    public void updateDices(ArrayList<Integer> col, ArrayList<Integer> num) {
+    void updateDices(ArrayList<Integer> col, ArrayList<Integer> num) {
         for (int i = 0; i < col.size(); i++) {
             //System.out.println("--- Setting Dice Color to " + col.get(i));
             colorDicePanel[i].setBackground(fieldColors[col.get(i)]);
@@ -257,7 +257,7 @@ public abstract class UI {
         }
     }
 
-    public void updateColorFinished(TreeSet<BoardField.FieldColor> colorFirst, TreeSet<BoardField.FieldColor> colorsLast, TreeSet<BoardField.FieldColor> colorsFinished) {
+    void updateColorFinished(TreeSet<BoardField.FieldColor> colorFirst, TreeSet<BoardField.FieldColor> colorsLast, TreeSet<BoardField.FieldColor> colorsFinished) {
         for (BoardField.FieldColor col : colorsFinished) {
             colorFinishedPanels[col.getIndex() * 2].setIcon(numbersChecked.get("5"));
         }
@@ -269,13 +269,13 @@ public abstract class UI {
         }
     }
 
-    public void updateJokers(int used) {
+    void updateJokers(int used) {
         for (int i = 0; i < used; i++) {
             jokerPanels[i].setIcon(icon_joker_checked);
         }
     }
 
-    public void updateColumnFinished(TreeSet<Integer> columnsFirst, TreeSet<Integer> columnsLast, TreeSet<Integer> columnsFinished) {
+    void updateColumnFinished(TreeSet<Integer> columnsFirst, TreeSet<Integer> columnsLast, TreeSet<Integer> columnsFinished) {
         for(int i : columnsFinished) {
             columnPointsFirstPanels[i].setIcon(numbersChecked.get(pointsFirstKey[i]));
         }
@@ -287,7 +287,7 @@ public abstract class UI {
         }
     }
 
-    public void updateScore(int[] scores) {
+    void updateScore(int[] scores) {
         for (int i = 0; i < scores.length; i++) {
             pointsLabels[i].setText(String.valueOf(scores[i]));
         }
@@ -303,7 +303,7 @@ public abstract class UI {
         }
     }*/
 
-    public void checkField(BoardField checkedField) {
+    void checkField(BoardField checkedField) {
         BoardFieldPanelAbstract boardFieldPanel = (BoardFieldPanelAbstract) boardPanel.getComponent(checkedField.getIndex());
         if(checkedField.isStar()) {
             boardFieldPanel.setIcon(icon_star_checked);
@@ -313,7 +313,7 @@ public abstract class UI {
         //System.out.println("check Field: " + checkedField.getX() + "|" + checkedField.getY());
     }
 
-    public void checkFields(Iterator<BoardField> fieldsIt) {
+    void checkFields(Iterator<BoardField> fieldsIt) {
         while (fieldsIt.hasNext()) {
             checkField(fieldsIt.next());
         }
@@ -358,7 +358,7 @@ public abstract class UI {
         }
     }
 
-    public JPanel createWhiteFieldPanel() {
+    JPanel createWhiteFieldPanel() {
         JPanel panel = new JPanel();
         panel.setBackground(backgroundCol);
         panel.setLayout(new FlowLayout(FlowLayout.CENTER, 3,3));  //new GridLayout(1, 15, 3,3));
@@ -369,7 +369,7 @@ public abstract class UI {
 
     class JokerFieldsPanel extends RoundedJPanel {
 
-        public JokerFieldsPanel() {
+        JokerFieldsPanel() {
             setBackground(Color.WHITE);
             setLayout(new FlowLayout(FlowLayout.CENTER, 12, 4));  //new GridLayout(1, 15, 3,3));
             setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
@@ -384,11 +384,11 @@ public abstract class UI {
     class ColorFinishPanel extends RoundedJPanel {
         JLabel lbl;
 
-        public void setIcon(ImageIcon icon) {
+        void setIcon(ImageIcon icon) {
             lbl.setIcon(icon);
         }
 
-        public ColorFinishPanel(int c, String val) {
+        ColorFinishPanel(int c, String val) {
             setLayout(new GridBagLayout());
             lbl = new JLabel(numbers.get(val));
             //lbl.setText(val);
@@ -400,9 +400,9 @@ public abstract class UI {
 
     class WideWhiteFieldPanel extends WhiteFieldPanel {
 
-        public WideWhiteFieldPanel(String text,  Color fontColor, int fieldSizeX, int fieldSizeY, int index) {
+        WideWhiteFieldPanel(String text,  Color fontColor, int fieldSizeX, int fieldSizeY, int index) {
             setLayout(new FlowLayout(FlowLayout.LEFT));
-            setBackground(whiteCol);
+            setBackground(Color.WHITE);
             JLabel lbl = new JLabel(text);
             lbl.setFont(lbl.getFont().deriveFont(Font.BOLD, 24));
             lbl.setForeground(fontColor);
@@ -419,24 +419,24 @@ public abstract class UI {
     class WhiteFieldPanel extends RoundedJPanel {
         JLabel lbl;
 
-        public void init() {
+        void init() {
             setLayout(new GridBagLayout());
-            setBackground(whiteCol);
+            setBackground(Color.WHITE);
             setPreferredSize(new Dimension(36, 36));
         }
 
-        public WhiteFieldPanel() {
+        WhiteFieldPanel() {
             super();
         }
 
-        public WhiteFieldPanel(ImageIcon img) {
+        WhiteFieldPanel(ImageIcon img) {
             super();
             init();
             lbl = new JLabel(img);
             add(lbl);
         }
 
-        public WhiteFieldPanel(String text, Color fontColor) {
+        WhiteFieldPanel(String text, Color fontColor) {
             super();
             init();
             lbl = new JLabel(text);
@@ -444,7 +444,7 @@ public abstract class UI {
             add(lbl);
         }
 
-        public WhiteFieldPanel(String text) {
+        WhiteFieldPanel(String text) {
             super();
             init();
             lbl = new JLabel(text);

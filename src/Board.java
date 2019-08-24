@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,10 +18,12 @@ public class Board {
     TreeSet<BoardField.FieldColor> completedColors = new TreeSet<>();
     TreeSet<BoardField.FieldColor> finishedColorsFirst = new TreeSet<>();
     TreeSet<BoardField.FieldColor> finishedColorsLast = new TreeSet<>();
+    Color boardColor;
 
-    Board(BoardField[] b, int w, int h) {
+    public Board(BoardField[] b, int w, int h, Color boardColor) {
         width = w;
         height = h;
+        this.boardColor = boardColor;
         board = b.clone();
         for (int y = 0; y < height; y++) {
             getField(7, y).setAccessible(true);
@@ -206,4 +209,7 @@ public class Board {
         //System.out.println("uncheckedStars: " + uncheckedStars);
     }
 
+    public Color getColor() {
+        return boardColor;
+    }
 }

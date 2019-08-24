@@ -1,10 +1,9 @@
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.TreeSet;
 
 public class AlgoPlayer extends Player {
-    final int uiDelay = 200;
+    final int uiDelay = 400;
 
     public AlgoPlayer(int num) {
         this.playerNum = num;

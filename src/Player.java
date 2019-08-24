@@ -8,6 +8,7 @@ public abstract class Player {
     UI ui;
     int remainingJokers = 8;
 
+
     public int getScore() {
         return board.getScore();
     }

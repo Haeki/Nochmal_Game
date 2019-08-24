@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -18,6 +19,7 @@ public class Game {
     int rounds;
     int activePlayer;
     String boardName = "error";
+    Color boardColor;
     Random rand;
 
     public Game(String boardPath) {
@@ -47,9 +49,13 @@ public class Game {
             boardName = ln;
             System.out.println("Spielfeldfarbe: " + boardName);
         }
+        if ((ln = br.readLine()) != null) {
+            boardColor = Color.decode(ln);
+            System.out.println("Spielfeldfarbe: " + boardColor.toString());
+        }
 
         int index = 0;
-        int x = 0;
+        int x;
         int y = 0;
         while((ln = br.readLine()) != null) {
             char[] row = ln.toCharArray();
@@ -81,7 +87,7 @@ public class Game {
         rounds = 0;
         activePlayer = rand.nextInt(players.size());
         for (Player p : players) {
-            p.init(new Board(Arrays.stream(boardArr).map(BoardField::new).toArray(BoardField[]::new), 15, 7));
+            p.init(new Board(Arrays.stream(boardArr).map(BoardField::new).toArray(BoardField[]::new), 15, 7, boardColor));
         }
         //gameUI = new GameUI();
         //gameUI.initUI("Noch mal - " + boardName);
