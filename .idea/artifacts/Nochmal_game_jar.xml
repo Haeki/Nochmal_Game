@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Nochmal_game:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Nochmal_game_jar</output-path>
+    <root id="archive" name="Nochmal_game.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/main/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="Nochmal_game" />
+    </root>
+  </artifact>
+</component>

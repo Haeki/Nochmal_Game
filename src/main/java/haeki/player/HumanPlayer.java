@@ -13,6 +13,7 @@ public class HumanPlayer extends Player {
 
 
     public HumanPlayer(int num) {
+        System.out.println("Create HumanPlayer number: " + num);
         this.playerNum = num;
         ui = new PlayerUI();
     }
@@ -254,6 +255,6 @@ public class HumanPlayer extends Player {
     @Override
     public void init(Board board) {
         super.init(board);
-        ui.initUI("haeki.player.Player " + playerNum, board);
+        ui.initUI("Human Player " + playerNum, board);
     }
 }

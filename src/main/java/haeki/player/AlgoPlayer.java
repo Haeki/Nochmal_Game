@@ -15,6 +15,7 @@ public class AlgoPlayer extends Player {
     private final int uiDelay = 400;
 
     public AlgoPlayer(int num) {
+        System.out.println("Create AlgoPlayer number: " + num);
         this.playerNum = num;
         ui = new AlgoUI();
     }
@@ -22,7 +23,7 @@ public class AlgoPlayer extends Player {
     @Override
     public void init(Board board) {
         super.init(board);
-        ui.initUI("haeki.player.Player " + playerNum, board);
+        ui.initUI("Algo Player " + playerNum, board);
     }
 
     /*
@@ -84,7 +85,7 @@ public class AlgoPlayer extends Player {
             ui.uncheckFields(m.getFields().iterator());*/
         }
         if (bestMove != null) {
-            System.out.println("Found Best haeki.Move with score: " + maxScore);
+            System.out.println("Found Best Move with score: " + maxScore);
             System.out.println(bestMove);
             board.setChecked(bestMove.getFields());
             board.updateAccessible(bestMove.getFields());
@@ -261,7 +262,7 @@ public class AlgoPlayer extends Player {
 
         @Override
         public String toString() {
-            StringBuilder str = new StringBuilder("---------haeki.Move--------\n");
+            StringBuilder str = new StringBuilder("---------Move--------\n");
             str.append("Col Joker: ").append(useColJoker).append(", Num Joker: ").append(useNumJoker).append(", Num: ").append(usedFields).append("\n");
             Iterator<BoardField> bfIt = fields.iterator();
             BoardField firstField = bfIt.next();

@@ -64,7 +64,7 @@ public abstract class UI {
 
         frame.setSize(new Dimension(1024, 720));
         //frame.addKeyListener(new SynchronizedKeyListener(this));
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         //frame.setResizable(true);
         frame.setVisible(true);
@@ -339,25 +339,25 @@ public abstract class UI {
     }
 
     private void loadImages() {
-        icon_normal = new ImageIcon("res/icons/normal_32.png");
-        icon_normal_checked = new ImageIcon("res/icons/normal_checked_32.png");
-        icon_star = new ImageIcon("res/icons/star_32.png");
-        icon_star_checked = new ImageIcon("res/icons/star_checked_32.png");
-        icon_joker = new ImageIcon("res/icons/joker_32.png");
-        icon_joker_checked = new ImageIcon("res/icons/joker_checked_32.png");
+        icon_normal = new ImageIcon(getClass().getClassLoader().getResource("res/icons/normal_32.png"), "Normal Field");
+        icon_normal_checked = new ImageIcon(getClass().getClassLoader().getResource("res/icons/normal_checked_32.png"), "Checked Field");
+        icon_star = new ImageIcon(getClass().getClassLoader().getResource("res/icons/star_32.png"), "Normal Star Field");
+        icon_star_checked = new ImageIcon(getClass().getClassLoader().getResource("res/icons/star_checked_32.png"), "Checked Star Field");
+        icon_joker = new ImageIcon(getClass().getClassLoader().getResource("res/icons/joker_32.png"), "Joker Icon");
+        icon_joker_checked = new ImageIcon(getClass().getClassLoader().getResource("res/icons/joker_checked_32.png"), "Checked Joker Icon");
 
         char[] numbs = new char[] {'1','2','3','5'};
         for (char n: numbs) {
-            numbers.put(String.valueOf(n), new ImageIcon("res/icons/numbers/" + n + "_32.png"));
-            numbersChecked.put(String.valueOf(n), new ImageIcon("res/icons/numbers/" + n + "_checked_32.png"));
-            numbersCircled.put(String.valueOf(n), new ImageIcon("res/icons/numbers/" + n + "_circled_32.png"));
+            numbers.put(String.valueOf(n), new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_32.png"), "Normal " + n));
+            numbersChecked.put(String.valueOf(n), new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_checked_32.png"), "Checked " + n));
+            numbersCircled.put(String.valueOf(n), new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_circled_32.png"), "Circled " + n));
         }
 
         char[] redNumbs = new char[] {'0', '1'};
         for (char n: redNumbs) {
-            numbers.put(n + "R", new ImageIcon("res/icons/numbers/" + n + "_red_32.png"));
-            numbersChecked.put(n + "R", new ImageIcon("res/icons/numbers/" + n + "_red_checked_32.png"));
-            numbersCircled.put(n + "R", new ImageIcon("res/icons/numbers/" + n + "_red_circled_32.png"));
+            numbers.put(n + "R", new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_red_32.png"), "Red normal " + n));
+            numbersChecked.put(n + "R", new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_red_checked_32.png"), "Red Checked " + n));
+            numbersCircled.put(n + "R", new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_red_circled_32.png"), "Red Circled " + n));
         }
     }
 

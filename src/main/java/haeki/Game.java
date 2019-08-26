@@ -5,10 +5,7 @@ import haeki.board.BoardField;
 import haeki.player.Player;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -29,9 +26,16 @@ public class Game {
     private final Random rand;
 
     Game(String boardPath) {
+        System.out.println("Create Game with Board: " + boardPath);
          try {
-            boardFromFile(boardPath);
+             boardFromFile(boardPath);
         } catch (IOException e) {
+             System.err.println("Error loading Board from File");
+             System.err.println(e);
+             System.exit(1);
+        } catch (NullPointerException e) {
+            System.err.println("Error file not found");
+            System.err.println(e);
             System.exit(1);
         }
         rand = new Random();
@@ -42,13 +46,12 @@ public class Game {
         rand.setSeed(seed);
     }
 
-    private void boardFromFile(String path) throws IOException {
-
-        File file = new File(path);
-        if(!file.canRead()) {
-            throw new IOException("Cant read from File: " + path);
+    private void boardFromFile(String path) throws IOException, NullPointerException {
+        InputStream fileStream = getClass().getClassLoader().getResourceAsStream(path);
+        if(fileStream == null) {
+            throw new NullPointerException();
         }
-        BufferedReader br = new BufferedReader(new FileReader(file));
+        BufferedReader br = new BufferedReader(new InputStreamReader(fileStream));
         String ln;
 
         if ((ln = br.readLine()) != null) {
