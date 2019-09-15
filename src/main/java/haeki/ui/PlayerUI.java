@@ -5,13 +5,13 @@ import haeki.board.BoardField;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PlayerUI extends UI {
 
     private int buttonID = -3;
 
+    private final ActionListener buttonActionListener = e -> buttonID = Integer.parseInt(e.getActionCommand());
 
     @SuppressWarnings("ThrowablePrintedToSystemOut")
     public int chooseField() {
@@ -42,29 +42,21 @@ public class PlayerUI extends UI {
         JPanel buttonPanel = new JPanel();
         JButton cancelButt = new JButton();
         cancelButt.setText("Cancel");
-        cancelButt.addActionListener(new ButtonActionListener());
+        cancelButt.addActionListener(buttonActionListener);
         cancelButt.setActionCommand(String.valueOf(CANCEL_MOVE));
         buttonPanel.add(cancelButt);
         JButton confirmButt = new JButton();
         confirmButt.setText("Confirm");
-        confirmButt.addActionListener(new ButtonActionListener());
+        confirmButt.addActionListener(buttonActionListener);
         confirmButt.setActionCommand(String.valueOf(CONFIRM_MOVE));
         buttonPanel.add(confirmButt);
         buttonPanel.setBackground(backgroundCol);
         lowerPanel.add(buttonPanel);
 
         mainPanel.add(lowerPanel);
-
     }
 
-    class ButtonActionListener implements ActionListener {
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            buttonID = Integer.parseInt(e.getActionCommand());
-        }
-
-    }
 
     @Override
     Component createBoardFieldPanel(int x, int y, BoardField field) {
@@ -81,7 +73,7 @@ public class PlayerUI extends UI {
             butt.setOpaque(false);
             butt.setContentAreaFilled(false);
             butt.setBorderPainted(false);
-            butt.addActionListener(new ButtonActionListener());
+            butt.addActionListener(buttonActionListener);
             butt.setActionCommand(String.valueOf(x + (15*y)));
             butt.setVerticalAlignment(SwingConstants.CENTER);
             if(bf.isStar()) {

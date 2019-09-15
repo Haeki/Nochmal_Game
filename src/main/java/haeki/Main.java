@@ -1,25 +1,26 @@
 package haeki;
 
-import haeki.player.*;
-import java.awt.*;
-import java.util.ArrayList;
+import haeki.ui.MenuUI;
 
-class Main extends Component{
+public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Started Game");
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(new HumanPlayer(1));
-        //players.add(new AlgoPlayer(1));
-        players.add(new AlgoPlayer(2));
-        //players.add(new AlgoPlayer(3));
-        //players.add(new haeki.player.AlgoPlayer(4));
-        //players.add(new haeki.player.HumanPlayer(2));
-        Game game = new Game("res/boards/Black.board");
-        game.initGame(players);
-        game.run();
-        System.out.println("Ended Game");
+        MenuUI menu = new MenuUI();
+        Game game = new Game();
+        while(true) {
+            if(menu.startGame()) {
+                game.initGame(menu.getPlayers(), menu.getBoard());
+                game.run();
+                break;
+            } else {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            //System.out.println("fdaut");
+        }
     }
-
 
 }

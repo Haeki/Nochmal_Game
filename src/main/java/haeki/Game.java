@@ -6,7 +6,10 @@ import haeki.player.Player;
 
 import java.awt.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
+import java.util.List;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class Game {
@@ -21,53 +24,47 @@ public class Game {
     private final TreeSet<BoardField.FieldColor> completeColors = new TreeSet<>();
     private int rounds;
     private int activePlayer;
-    private String boardName = "error";
     private Color boardColor;
     private final Random rand;
 
-    Game(String boardPath) {
-        System.out.println("Create Game with Board: " + boardPath);
-         try {
-             boardFromFile(boardPath);
-        } catch (IOException e) {
-             System.err.println("Error loading Board from File");
-             System.err.println(e);
-             System.exit(1);
-        } catch (NullPointerException e) {
-            System.err.println("Error file not found");
-            System.err.println(e);
-            System.exit(1);
-        }
+    Game() {
         rand = new Random();
     }
 
-    public Game(String boardPath, long seed) {
-        this(boardPath);
+    public Game(long seed) {
+        this();
         rand.setSeed(seed);
     }
 
-    private void boardFromFile(String path) throws IOException, NullPointerException {
-        InputStream fileStream = getClass().getClassLoader().getResourceAsStream(path);
+    private void boardFromFile(Path path) throws IOException, NullPointerException {
+        /*InputStream fileStream = getClass().getClassLoader().getResourceAsStream(path);
         if(fileStream == null) {
             throw new NullPointerException();
         }
         BufferedReader br = new BufferedReader(new InputStreamReader(fileStream));
-        String ln;
+        String ln;*/
 
-        if ((ln = br.readLine()) != null) {
-            boardName = ln;
+        List<String> lines = Files.readAllLines(path);
+        Iterator<String> linesIt = lines.iterator();
+        String boardName;
+        if (linesIt.hasNext()) {
+            boardName = linesIt.next();
             System.out.println("Spielfeldfarbe: " + boardName);
+        } else {
+            throw new IndexOutOfBoundsException("File not in right Format");
         }
-        if ((ln = br.readLine()) != null) {
-            boardColor = Color.decode(ln);
+        if (linesIt.hasNext()) {
+            boardColor = Color.decode(linesIt.next());
             System.out.println("Spielfeldfarbe: " + boardColor.toString());
+        } else {
+            throw new IndexOutOfBoundsException("File not in right Format");
         }
 
         int index = 0;
         int x;
         int y = 0;
-        while((ln = br.readLine()) != null) {
-            char[] row = ln.toCharArray();
+        while(linesIt.hasNext()) {
+            char[] row = linesIt.next().toCharArray();
             x = 0;
             for (char f : row) {
                 switch (f) {
@@ -86,12 +83,26 @@ public class Game {
             }
             y++;
         }
+        //br.close();
+        //fileStream.close();
         System.out.println("Loaded " + index + " Fields from: " + boardName);
     }
 
 
 
-    void initGame(ArrayList<Player> ps) {
+    void initGame(ArrayList<Player> ps, Path boardPath) {
+        System.out.println("Create Game with Board: " + boardPath.getFileName().toString());
+        try {
+            boardFromFile(boardPath);
+        } catch (IOException e) {
+            System.err.println("Error loading Board from File");
+            e.printStackTrace();
+            System.exit(1);
+        } catch (NullPointerException e) {
+            System.err.println("Error file not found");
+            e.printStackTrace();
+            System.exit(1);
+        }
         players = ps;
         rounds = 0;
         activePlayer = rand.nextInt(players.size());
@@ -156,6 +167,7 @@ public class Game {
 
     @SuppressWarnings("unchecked")
     void run() {
+        System.out.println("Run Game...");
         boolean isRunning = true;
         while(isRunning) {
             //if(gameUI.getButtonInput() == 1) {

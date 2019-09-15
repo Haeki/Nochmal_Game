@@ -44,6 +44,7 @@ public abstract class UI {
 
 
     public void initUI(String winText, Board board) {
+        System.err.println("Initialising UI (" + winText + ")");
         loadImages();
         backgroundCol = board.getColor();
 
@@ -64,7 +65,7 @@ public abstract class UI {
 
         frame.setSize(new Dimension(1024, 720));
         //frame.addKeyListener(new SynchronizedKeyListener(this));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         //frame.setResizable(true);
         frame.setVisible(true);
@@ -296,16 +297,6 @@ public abstract class UI {
         }
     }
 
-    /*
-    public void confirmField(haeki.board.BoardField boardField) {
-        BoardFieldPanelAbstract boardFieldPanel = (BoardFieldPanelAbstract) boardPanel.getComponent(boardField.getIndex());
-        if(boardField.isStar()) {
-            boardFieldPanel.setIcon(icon_star_checked);
-        } else {
-            boardFieldPanel.setIcon(icon_normal_checked);
-        }
-    }*/
-
     public void checkField(BoardField checkedField) {
         BoardFieldPanelAbstract boardFieldPanel = (BoardFieldPanelAbstract) boardPanel.getComponent(checkedField.getIndex());
         if(checkedField.isStar()) {
@@ -339,25 +330,29 @@ public abstract class UI {
     }
 
     private void loadImages() {
-        icon_normal = new ImageIcon(getClass().getClassLoader().getResource("res/icons/normal_32.png"), "Normal Field");
-        icon_normal_checked = new ImageIcon(getClass().getClassLoader().getResource("res/icons/normal_checked_32.png"), "Checked Field");
-        icon_star = new ImageIcon(getClass().getClassLoader().getResource("res/icons/star_32.png"), "Normal Star Field");
-        icon_star_checked = new ImageIcon(getClass().getClassLoader().getResource("res/icons/star_checked_32.png"), "Checked Star Field");
-        icon_joker = new ImageIcon(getClass().getClassLoader().getResource("res/icons/joker_32.png"), "Joker Icon");
-        icon_joker_checked = new ImageIcon(getClass().getClassLoader().getResource("res/icons/joker_checked_32.png"), "Checked Joker Icon");
+        try {
+            icon_normal = new ImageIcon(getClass().getClassLoader().getResource("res/icons/normal_32.png"), "Normal Field");
+            icon_normal_checked = new ImageIcon(getClass().getClassLoader().getResource("res/icons/normal_checked_32.png"), "Checked Field");
+            icon_star = new ImageIcon(getClass().getClassLoader().getResource("res/icons/star_32.png"), "Normal Star Field");
+            icon_star_checked = new ImageIcon(getClass().getClassLoader().getResource("res/icons/star_checked_32.png"), "Checked Star Field");
+            icon_joker = new ImageIcon(getClass().getClassLoader().getResource("res/icons/joker_32.png"), "Joker Icon");
+            icon_joker_checked = new ImageIcon(getClass().getClassLoader().getResource("res/icons/joker_checked_32.png"), "Checked Joker Icon");
 
-        char[] numbs = new char[] {'1','2','3','5'};
-        for (char n: numbs) {
-            numbers.put(String.valueOf(n), new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_32.png"), "Normal " + n));
-            numbersChecked.put(String.valueOf(n), new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_checked_32.png"), "Checked " + n));
-            numbersCircled.put(String.valueOf(n), new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_circled_32.png"), "Circled " + n));
-        }
+            char[] numbs = new char[] {'1','2','3','5'};
+            for (char n: numbs) {
+                numbers.put(String.valueOf(n), new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_32.png"), "Normal " + n));
+                numbersChecked.put(String.valueOf(n), new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_checked_32.png"), "Checked " + n));
+                numbersCircled.put(String.valueOf(n), new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_circled_32.png"), "Circled " + n));
+            }
 
-        char[] redNumbs = new char[] {'0', '1'};
-        for (char n: redNumbs) {
-            numbers.put(n + "R", new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_red_32.png"), "Red normal " + n));
-            numbersChecked.put(n + "R", new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_red_checked_32.png"), "Red Checked " + n));
-            numbersCircled.put(n + "R", new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_red_circled_32.png"), "Red Circled " + n));
+            char[] redNumbs = new char[] {'0', '1'};
+            for (char n: redNumbs) {
+                numbers.put(n + "R", new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_red_32.png"), "Red normal " + n));
+                numbersChecked.put(n + "R", new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_red_checked_32.png"), "Red Checked " + n));
+                numbersCircled.put(n + "R", new ImageIcon(getClass().getClassLoader().getResource("res/icons/numbers/" + n + "_red_circled_32.png"), "Red Circled " + n));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -464,30 +459,6 @@ public abstract class UI {
     abstract class BoardFieldPanelAbstract extends RoundedJPanel {
         abstract void setIcon(ImageIcon icon);
     }
-
-
-    /*
-        public BoardFieldPanel(int x, int y, haeki.board.BoardField bf) {
-            setPreferredSize(new Dimension(36, 36));
-            boardField = bf;
-            setLayout(new BorderLayout());
-            JLabel lbl = new JLabel();
-            lbl.setOpaque(false);
-
-            lbl.setVerticalAlignment(SwingConstants.CENTER);
-
-            if(boardField.isStar()) {
-                lbl.setIcon(icon_star);
-            } else {
-                lbl.setIcon(icon_normal);
-            }
-            if(x == 7) {
-                setWhiteBorder(true);
-            }
-            setBackground(fieldColors[bf.getFieldColor().getIndex()]);
-            add(lbl, BorderLayout.CENTER);
-        }
-    }*/
 
     public class RoundedJPanel extends JPanel {
 

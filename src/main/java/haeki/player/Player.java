@@ -77,6 +77,6 @@ public abstract class Player {
     }
 
     public void won() {
-        System.out.println("haeki.player.Player " + playerNum + " has won with " + board.getScore() + " Points");
+        System.out.println("Player " + playerNum + " has won with " + board.getScore() + " Points");
     }
 }

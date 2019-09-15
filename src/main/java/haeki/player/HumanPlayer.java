@@ -251,6 +251,10 @@ public class HumanPlayer extends Player {
         }
     }
 
+    @Override
+    public void won() {
+        ui.showMessage("You won !!");
+    }
 
     @Override
     public void init(Board board) {
